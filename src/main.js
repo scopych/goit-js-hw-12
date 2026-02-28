@@ -1,5 +1,5 @@
 import { getImagesByQuery } from './js/pixabay-api.js';
-import { createGallery, clearGallery,  hideLoader, showLoader }    from './js/render-functions.js';
+import { createGallery, clearGallery, hideLoader, showLoader, showLoadMoreButton, hideLoadMoreButton } from './js/render-functions.js';
 import iziToast from "izitoast";
 // Додатковий імпорт стилів
 import "izitoast/dist/css/iziToast.min.css";
@@ -11,13 +11,14 @@ function handleSubmit(event) {
   event.preventDefault();
   const currentForm = event.target;
   const search_text = currentForm.elements["search-text"].value;
+  let pagen = 1;
   
   if (search_text.trim() === "") {
     return;
   } else {
   	clearGallery();
 	showLoader();
-  	getImagesByQuery(search_text)
+  	getImagesByQuery(search_text, pagen)
 		.then(hits => {
 			if (hits.length === 0) {
 				iziToast.error({
@@ -27,6 +28,7 @@ function handleSubmit(event) {
 				});
 			} else {
 				createGallery(hits);
+				showLoadMoreButton();
 			}
 
 		})

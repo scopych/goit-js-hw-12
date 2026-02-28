@@ -7,17 +7,12 @@ const searchParams = new URLSearchParams({
   lang: 'en',
   orientation: 'horizontal',
   safesearch: true,
+  page: 1,
+  per_page: 15,
 });
 
-export function getImagesByQuery (query) {
-	 return axios.get(`/?${searchParams}&q=${query}`)
-	 	.then(response => {
-	 		 return response.data.hits;
-	 	})
-	 	.catch(error => {
-	 		console.log(error);
-	 		console.log(error.response?.status);
-	 		console.log(error.response?.statusText);
-	 		return error;
-	 	});
+export async function getImagesByQuery (query, pagen) {
+	searchParams.page = pagen;
+	const response = await axios.get(`/?${searchParams}&q=${query}`);
+	return response.data.hits;
 }

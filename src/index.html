@@ -26,6 +26,7 @@
       /></i>
       Free Images
     </a>
+
     <form class="form">
       <label>
         <input
@@ -37,10 +38,16 @@
       </label>
       <button type="submit">Search</button>
     </form>
+
     <div class="loader-wrapper">
       <span class="loader hidden"></span>
     </div>
-    <ul class="gallery"></ul>
+
+	<div class="gallery-wrapper">
+    	<ul class="gallery"></ul>
+		<button class="load-btn hidden" type="submit">Load more</button>
+	</div>
+
     <script type="module" src="./main.js"></script>
   </body>
 </html>
