@@ -7,10 +7,15 @@ import "izitoast/dist/css/iziToast.min.css";
 const form = document.querySelector(".form");
 form.addEventListener("submit", handleSubmit);
 
+
 function handleSubmit(event) {
   event.preventDefault();
   const currentForm = event.target;
   const search_text = currentForm.elements["search-text"].value;
+	const loadMoreBtn = document.querySelector(".load-btn");
+	
+	loadMoreBtn.addEventListener("click", handleLoadMoreBtn);
+
   let pagen = 1;
   
   if (search_text.trim() === "") {
@@ -48,6 +53,11 @@ function handleSubmit(event) {
   }
 }
 
-
-
+function  handleLoadMoreBtn (event) {
+	iziToast.error({
+			    title: 'Error',
+			    message: 'The button works.',
+			    position: 'topRight',
+			});
+}
 
