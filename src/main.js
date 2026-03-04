@@ -6,22 +6,22 @@ import "izitoast/dist/css/iziToast.min.css";
 
 const form = document.querySelector(".form");
 form.addEventListener("submit", handleSubmit);
+const loadMoreBtn = document.querySelector(".load-btn");
+loadMoreBtn.addEventListener("click", handleLoadMoreBtn);
 
+let pagen = 1;
+let search_text;
 
 function handleSubmit(event) {
   event.preventDefault();
   const currentForm = event.target;
-  const search_text = currentForm.elements["search-text"].value;
-	const loadMoreBtn = document.querySelector(".load-btn");
-	
-	loadMoreBtn.addEventListener("click", handleLoadMoreBtn);
-
-  let pagen = 1;
+  search_text = currentForm.elements["search-text"].value;  
   
   if (search_text.trim() === "") {
     return;
   } else {
-  	clearGallery();
+	pagen = 1;
+  clearGallery();
 	showLoader();
   	getImagesByQuery(search_text, pagen)
 		.then(hits => {
@@ -54,10 +54,22 @@ function handleSubmit(event) {
 }
 
 function  handleLoadMoreBtn (event) {
-	iziToast.error({
+	pagen++;
+
+	getImagesByQuery(search_text, pagen)
+	.then(hits => {
+		createGallery(hits);
+		showLoadMoreButton();
+	})
+	.catch( (error) => {
+			iziToast.error({
 			    title: 'Error',
-			    message: 'The button works.',
+			    message: 'Something went wrong.',
 			    position: 'topRight',
 			});
+	})
+	.finally( () => {
+			 hideLoader();
+	});
 }
 

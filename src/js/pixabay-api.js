@@ -11,8 +11,9 @@ const searchParams = new URLSearchParams({
   per_page: 15,
 });
 
-export async function getImagesByQuery (query, pagen) {
+export async function getImagesByQuery (query, pagen=1) {
 	searchParams.page = pagen;
+	console.log(searchParams.page);
 	const response = await axios.get(`/?${searchParams}&q=${query}`);
 	return response.data.hits;
 }

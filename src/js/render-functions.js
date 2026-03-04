@@ -21,7 +21,8 @@ export function createGallery (images) {
 		</div>
 	</li>`).join('');
 	
-	document.querySelector('.gallery').innerHTML = listItems;
+//	document.querySelector('.gallery').innerHTML = listItems;
+	document.querySelector('.gallery').insertAdjacentHTML('beforeend', listItems);
 	lightbox.refresh();
 	return 0;
 }
