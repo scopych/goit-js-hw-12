@@ -8,45 +8,48 @@
     <link rel="stylesheet" href="./css/styles.css" />
   </head>
   <body>
-    <a
-      href="https://pixabay.com/"
-      style="
-        margin: 3px 15px 5px 0;
-        font-size: 12px;
-        line-height: 1.7;
-        color: #555;
-        display: block;
-        float: left;
-        padding: 9px 12px 6px;
-        border: 1px solid #ccc;
-      "
-    >
-      <i style="display: block; width: 68px; height: 18px; overflow: hidden"
-        ><img class="pixalogo" src="./img/pixabaylogo.svg" style="width: 94px"
-      /></i>
-      Free Images
-    </a>
+		<div class="container">
+	    <a
+	      href="https://pixabay.com/"
+	      style="
+	        margin: 3px 15px 5px 0;
+	        font-size: 12px;
+	        line-height: 1.7;
+	        color: #555;
+	        display: block;
+	        float: left;
+	        padding: 9px 12px 6px;
+	        border: 1px solid #ccc;
+	      "
+	    >
+	      <i style="display: block; width: 68px; height: 18px; overflow: hidden"
+	        ><img class="pixalogo" src="./img/pixabaylogo.svg" style="width: 94px"
+	      /></i>
+	      Free Images
+	    </a>
 
-    <form class="form">
-      <label>
-        <input
-          type="text"
-          name="search-text"
-          placeholder="Search images..."
-          required
-        />
-      </label>
-      <button type="submit">Search</button>
-    </form>
+	    <form class="form">
+	      <label>
+	        <input
+	          type="text"
+	          name="search-text"
+	          placeholder="Search images..."
+	          required
+	        />
+	      </label>
+	      <button type="submit">Search</button>
+	    </form>
+		</div>
 
-    <div class="loader-wrapper">
-	      <span class="loader hidden"></span>
-	  </div>
 
 		<div class="gallery-wrapper">
 	    <ul class="gallery"></ul>
 			<button class="load-btn hidden" type="button">Load more</button>
 		</div>
+
+    <div class="loader-wrapper">
+	      <span class="loader hidden"></span>
+	  </div>
 
     <script type="module" src="./main.js"></script>
   </body>

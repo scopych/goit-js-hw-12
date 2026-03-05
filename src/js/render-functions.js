@@ -45,4 +45,4 @@ export function showLoadMoreButton () {
 
 export function hideLoadMoreButton () {
         loadBtn.classList.add("hidden");
-o}
+}

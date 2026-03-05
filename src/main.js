@@ -50,10 +50,13 @@ async function handleSubmit(event) {
 
 async function  handleLoadMoreBtn (event) {
 	pagen += 1;
-	console.log('pagen from handleLoadMoreBtn: ' + pagen); 
+	hideLoadMoreButton();
+	showLoader();
 	try {
 		const hits = await getImagesByQuery(search_text, pagen);
 		createGallery(hits);
+		showLoadMoreButton();
+		hideLoader();
 	} catch ( error) {
 			iziToast.error({
 			    title: 'Error',
@@ -62,7 +65,5 @@ async function  handleLoadMoreBtn (event) {
 			});
 	}
 	
-	showLoadMoreButton();
-	hideLoader();
 }
 
