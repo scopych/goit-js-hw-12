@@ -4,27 +4,29 @@ import iziToast from "izitoast";
 // Додатковий імпорт стилів
 import "izitoast/dist/css/iziToast.min.css";
 
+let pagen = 1;
+let search_text;
+
 const form = document.querySelector(".form");
 form.addEventListener("submit", handleSubmit);
 const loadMoreBtn = document.querySelector(".load-btn");
 loadMoreBtn.addEventListener("click", handleLoadMoreBtn);
 
-let pagen = 1;
-let search_text;
 
-function handleSubmit(event) {
+
+async function handleSubmit(event) {
   event.preventDefault();
-  const currentForm = event.target;
+	const currentForm = event.target;
   search_text = currentForm.elements["search-text"].value;  
   
   if (search_text.trim() === "") {
     return;
   } else {
-	pagen = 1;
   clearGallery();
+	pagen = 1;
 	showLoader();
-  	getImagesByQuery(search_text, pagen)
-		.then(hits => {
+		try {
+  		const hits = await getImagesByQuery(search_text, pagen);
 			if (hits.length === 0) {
 				iziToast.error({
 				    title: '',
@@ -34,42 +36,33 @@ function handleSubmit(event) {
 			} else {
 				createGallery(hits);
 				showLoadMoreButton();
+				hideLoader();
 			}
-
-		})
-		.catch( (error) => {
-			iziToast.error({
-			    title: 'Error',
-			    message: 'Something went wrong.',
-			    position: 'topRight',
-			});
-			console.log(error);
-			console.log(error.status);
-			console.log(error.statusText);
-		})
-		.finally( () => {
-			 hideLoader();
-		});
+		} catch (error) {
+				iziToast.error({
+				    title: 'Error',
+				    message: 'Something went wrong.',
+				    position: 'topRight',
+				});
+		}
   }
 }
 
-function  handleLoadMoreBtn (event) {
-	pagen++;
-
-	getImagesByQuery(search_text, pagen)
-	.then(hits => {
+async function  handleLoadMoreBtn (event) {
+	pagen += 1;
+	console.log('pagen from handleLoadMoreBtn: ' + pagen); 
+	try {
+		const hits = await getImagesByQuery(search_text, pagen);
 		createGallery(hits);
-		showLoadMoreButton();
-	})
-	.catch( (error) => {
+	} catch ( error) {
 			iziToast.error({
 			    title: 'Error',
 			    message: 'Something went wrong.',
 			    position: 'topRight',
 			});
-	})
-	.finally( () => {
-			 hideLoader();
-	});
+	}
+	
+	showLoadMoreButton();
+	hideLoader();
 }
 
