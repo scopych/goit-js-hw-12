@@ -5,6 +5,8 @@ import iziToast from "izitoast";
 import "izitoast/dist/css/iziToast.min.css";
 
 let pagen = 1;
+let maxPage = 1;
+const hitsPerPage = 15;
 let search_text;
 
 const form = document.querySelector(".form");
@@ -26,17 +28,27 @@ async function handleSubmit(event) {
 	pagen = 1;
 	showLoader();
 		try {
-  		const hits = await getImagesByQuery(search_text, pagen);
-			if (hits.length === 0) {
+  		const data = await getImagesByQuery(search_text, pagen);
+			if (data.hits.length === 0) {
 				iziToast.error({
 				    title: '',
 				    position: 'topRight',
 				    message: 'Sorry, there are no images matching your search query. Please try again!',
 				});
 			} else {
-				createGallery(hits);
+				createGallery(data.hits);
 				showLoadMoreButton();
 				hideLoader();
+			}
+
+			maxPage = Math.round(data.totalHits / hitsPerPage);
+			if (maxPage == pagen || maxPage == 0) {
+				hideLoadMoreButton();
+				iziToast.info({
+    			title: '',
+					position: 'topRight',
+    			message: "We're sorry, but you've reached the end of search results.",
+				});
 			}
 		} catch (error) {
 				iziToast.error({
@@ -53,10 +65,21 @@ async function  handleLoadMoreBtn (event) {
 	hideLoadMoreButton();
 	showLoader();
 	try {
-		const hits = await getImagesByQuery(search_text, pagen);
-		createGallery(hits);
-		showLoadMoreButton();
-		hideLoader();
+		const data = await getImagesByQuery(search_text, pagen);
+		createGallery(data.hits);
+		galleryScroll();
+		if (maxPage == pagen) {
+			hideLoadMoreButton();
+			hideLoader();
+			iziToast.info({
+    		title: '',
+				position: 'topRight',
+    		message: "We're sorry, but you've reached the end of search results.",
+			});
+		} else {
+			showLoadMoreButton();
+			hideLoader();
+		}
 	} catch ( error) {
 			iziToast.error({
 			    title: 'Error',
@@ -67,3 +90,15 @@ async function  handleLoadMoreBtn (event) {
 	
 }
 
+function galleryScroll () {
+	const imageCard = document.querySelector(".imageCard");
+	const rect = imageCard.getBoundingClientRect();
+	const imageCardHeight = rect.height;
+
+	const options = {
+		top: imageCardHeight * 2,
+		behavior: 'smooth',
+	}
+
+	scrollBy(options);
+}

@@ -17,7 +17,6 @@ img {
 	display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
   width: 100%;
 }
 
@@ -88,6 +87,7 @@ img {
 
 .captions p {
   text-align: center;
+	margin: 0 0 0 0;
 }
 
 .load-btn {

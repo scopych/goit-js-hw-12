@@ -9,9 +9,9 @@ var lightbox = new SimpleLightbox('.gallery a', { /* options */ });
 
 export function createGallery (images) {
 	const listItems = images.map(obj => `
-	<li>
+	<li class="imageCard" >
 		<a href="${obj.largeImageURL}">
-			<img src="${obj.webformatURL}" alt="${obj.tags}">
+			<img  src="${obj.webformatURL}" alt="${obj.tags}">
 		</a>
 		<div class="captions">
 			<p><strong>Likes:</strong> ${obj.likes}</p>
@@ -21,7 +21,6 @@ export function createGallery (images) {
 		</div>
 	</li>`).join('');
 	
-//	document.querySelector('.gallery').innerHTML = listItems;
 	document.querySelector('.gallery').insertAdjacentHTML('beforeend', listItems);
 	lightbox.refresh();
 	return 0;
