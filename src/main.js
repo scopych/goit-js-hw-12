@@ -20,13 +20,14 @@ async function handleSubmit(event) {
   event.preventDefault();
 	const currentForm = event.target;
   search_text = currentForm.elements["search-text"].value;  
-  
+
   if (search_text.trim() === "") {
     return;
   } else {
-  clearGallery();
-	pagen = 1;
-	showLoader();
+		hideLoadMoreButton();
+		showLoader();
+	  clearGallery();
+		pagen = 1;
 		try {
   		const data = await getImagesByQuery(search_text, pagen);
 			if (data.hits.length === 0) {
@@ -35,22 +36,25 @@ async function handleSubmit(event) {
 				    position: 'topRight',
 				    message: 'Sorry, there are no images matching your search query. Please try again!',
 				});
+				hideLoader();
 			} else {
 				createGallery(data.hits);
 				showLoadMoreButton();
 				hideLoader();
 			}
 
-			maxPage = Math.round(data.totalHits / hitsPerPage);
-			if (maxPage == pagen || maxPage == 0) {
-				hideLoadMoreButton();
+			maxPage = Math.ceil(data.totalHits / hitsPerPage);
+			if (maxPage == pagen) {
 				iziToast.info({
     			title: '',
 					position: 'topRight',
     			message: "We're sorry, but you've reached the end of search results.",
 				});
+				hideLoadMoreButton();
 			}
 		} catch (error) {
+				hideLoad();
+				hideLoadMoreButton();
 				iziToast.error({
 				    title: 'Error',
 				    message: 'Something went wrong.',
@@ -81,6 +85,7 @@ async function  handleLoadMoreBtn (event) {
 			hideLoader();
 		}
 	} catch ( error) {
+			hideLoad();
 			iziToast.error({
 			    title: 'Error',
 			    message: 'Something went wrong.',
